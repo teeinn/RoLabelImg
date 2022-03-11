@@ -625,7 +625,9 @@ class Canvas(QWidget):
 
     def outOfPixmap(self, p):
         w, h = self.pixmap.width(), self.pixmap.height()
-        return not (0 <= p.x() < w and 0 <= p.y() < h)
+        return not (-500 <= p.x() < w + 500 and -500 <= p.y() < h + 500)
+
+    # return not (0 <= p.x() < w and 0 <= p.y() < h)
 
     def finalise(self):
         assert self.current

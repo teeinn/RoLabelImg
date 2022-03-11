@@ -220,16 +220,27 @@ class PascalVocReader:
     # You Hao 2017/06/21
     # add to analysis robndbox load from xml
     def addRotatedShape(self, label, robndbox, difficult):
-        cx = float(robndbox.find('cx').text)
-        cy = float(robndbox.find('cy').text)
-        w = float(robndbox.find('w').text)
-        h = float(robndbox.find('h').text)
-        angle = float(robndbox.find('angle').text)
+        if robndbox.find('cx').text == None:
+            p0x = float(robndbox.find('x0').text)
+            p0y = float(robndbox.find('y0').text)
+            p1x = float(robndbox.find('x1').text)
+            p1y = float(robndbox.find('y1').text)
+            p2x = float(robndbox.find('x2').text)
+            p2y = float(robndbox.find('y2').text)
+            p3x = float(robndbox.find('x3').text)
+            p3y = float(robndbox.find('y3').text)
+            angle = 0
+        else:
+            cx = float(robndbox.find('cx').text)
+            cy = float(robndbox.find('cy').text)
+            w = float(robndbox.find('w').text)
+            h = float(robndbox.find('h').text)
+            angle = float(robndbox.find('angle').text)
 
-        p0x,p0y = self.rotatePoint(cx,cy, cx - w/2, cy - h/2, -angle)
-        p1x,p1y = self.rotatePoint(cx,cy, cx + w/2, cy - h/2, -angle)
-        p2x,p2y = self.rotatePoint(cx,cy, cx + w/2, cy + h/2, -angle)
-        p3x,p3y = self.rotatePoint(cx,cy, cx - w/2, cy + h/2, -angle)
+            p0x,p0y = self.rotatePoint(cx,cy, cx - w/2, cy - h/2, -angle)
+            p1x,p1y = self.rotatePoint(cx,cy, cx + w/2, cy - h/2, -angle)
+            p2x,p2y = self.rotatePoint(cx,cy, cx + w/2, cy + h/2, -angle)
+            p3x,p3y = self.rotatePoint(cx,cy, cx - w/2, cy + h/2, -angle)
 
         points = [(p0x, p0y), (p1x, p1y), (p2x, p2y), (p3x, p3y)]
         self.shapes.append((label, points, angle, True, None, None, difficult))
